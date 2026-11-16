@@ -26,6 +26,22 @@ export class PargArtifactJs {
      */
     entryNames(): string[];
     /**
+     * Lower the artifact to a constrained-decoder grammar form
+     * (`target`: "xgrammar" | "llguidance"); `recovery` lowers each
+     * declared resync pattern as an escape alternative at the
+     * repetition spine. Rust is the authoritative lowering — TS
+     * inherits it through this surface instead of a per-language port.
+     */
+    export(target: string, recovery: boolean): string;
+    /**
+     * Emit a render variant against a bound attribute map (rs#459
+     * slice 2 — the graduated generation path). `model_json` is the
+     * bound map as JSON text (what `parseAndBind` returns). Rust is
+     * the authoritative lowering; TS inherits it through this surface
+     * instead of a per-language renderer.
+     */
+    generate(variant: string, model_json: string): string;
+    /**
      * Load and checksum-verify an artifact envelope.
      */
     constructor(artifact_json: string);
@@ -48,6 +64,12 @@ export class PargArtifactJs {
      * it does not claim best-effort recovery captures.
      */
     parseShapeWithCompatibility(entry: string, input: string, compatibility: string): string;
+    /**
+     * Explicit reporter without changing existing parseShape defaults.
+     * Compatibility is "strict" or "parslet"; reporter is "default" or
+     * "deepest". The owned JSON result uses the existing shape/error envelope.
+     */
+    parseShapeWithReporter(entry: string, input: string, compatibility: string, reporter: string): string;
     /**
      * Parse an entry with the native engine; returns the parsanol-shape
      * tree as JSON text.
@@ -171,6 +193,24 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
     readonly memory: WebAssembly.Memory;
+    readonly __wbg_pargartifactjs_free: (a: number, b: number) => void;
+    readonly __wbg_wasmparser_free: (a: number, b: number) => void;
+    readonly compileSource: (a: number, b: number) => [number, number, number, number];
+    readonly pargartifactjs_applyBindings: (a: number, b: number, c: number, d: number, e: number) => [number, number, number];
+    readonly pargartifactjs_applyBindingsArtifact: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => [number, number, number];
+    readonly pargartifactjs_entryNames: (a: number) => [number, number];
+    readonly pargartifactjs_export: (a: number, b: number, c: number, d: number) => [number, number, number];
+    readonly pargartifactjs_generate: (a: number, b: number, c: number, d: number, e: number) => [number, number, number];
+    readonly pargartifactjs_new: (a: number, b: number) => [number, number, number];
+    readonly pargartifactjs_parseAndBind: (a: number, b: number, c: number, d: number, e: number) => [number, number, number];
+    readonly pargartifactjs_parseShape: (a: number, b: number, c: number, d: number, e: number) => [number, number, number];
+    readonly pargartifactjs_parseShapeRecovering: (a: number, b: number, c: number, d: number, e: number) => [number, number, number];
+    readonly pargartifactjs_parseShapeWithCompatibility: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => [number, number, number];
+    readonly pargartifactjs_parseShapeWithReporter: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => [number, number, number];
+    readonly pargartifactjs_runTests: (a: number) => [number, number, number];
+    readonly pargartifactjs_schema: (a: number) => [number, number, number];
+    readonly pargartifactjs_schemaTypescript: (a: number) => [number, number, number];
+    readonly pargartifactjs_semanticsHash: (a: number) => any;
     readonly parsanol_c_last_error: () => number;
     readonly parsanol_c_parse: (a: bigint, b: number, c: number, d: number) => number;
     readonly parsanol_c_parse_len: (a: bigint, b: number, c: number, d: number, e: number) => number;
@@ -182,10 +222,13 @@ export interface InitOutput {
     readonly parsanol_grammar_new_with_error: (a: number, b: number) => number;
     readonly parsanol_grammar_root: (a: number) => number;
     readonly parsanol_parg_error: (a: number, b: number) => number;
+    readonly parsanol_parg_export: (a: number, b: number, c: number) => number;
     readonly parsanol_parg_free: (a: number) => void;
+    readonly parsanol_parg_generate: (a: number, b: number, c: number) => number;
     readonly parsanol_parg_parse: (a: number, b: number) => number;
     readonly parsanol_parg_parse_recovering: (a: number, b: number, c: number) => number;
     readonly parsanol_parg_parse_with_compatibility: (a: number, b: number, c: number, d: number) => number;
+    readonly parsanol_parg_parse_with_reporter: (a: number, b: number, c: number, d: number, e: number) => number;
     readonly parsanol_parse: (a: number, b: number, c: number) => number;
     readonly parsanol_parse_end_pos: (a: number, b: number) => number;
     readonly parsanol_parse_simple: (a: number, b: number) => number;
@@ -195,27 +238,12 @@ export interface InitOutput {
     readonly parsanol_result_free: (a: number) => void;
     readonly parsanol_result_success: (a: number) => number;
     readonly parsanol_version: () => number;
-    readonly parsanol_string_free: (a: number) => void;
-    readonly __wbg_pargartifactjs_free: (a: number, b: number) => void;
-    readonly __wbg_wasmparser_free: (a: number, b: number) => void;
-    readonly compileSource: (a: number, b: number) => [number, number, number, number];
-    readonly pargartifactjs_applyBindings: (a: number, b: number, c: number, d: number, e: number) => [number, number, number];
-    readonly pargartifactjs_applyBindingsArtifact: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => [number, number, number];
-    readonly pargartifactjs_entryNames: (a: number) => [number, number];
-    readonly pargartifactjs_new: (a: number, b: number) => [number, number, number];
-    readonly pargartifactjs_parseAndBind: (a: number, b: number, c: number, d: number, e: number) => [number, number, number];
-    readonly pargartifactjs_parseShape: (a: number, b: number, c: number, d: number, e: number) => [number, number, number];
-    readonly pargartifactjs_parseShapeRecovering: (a: number, b: number, c: number, d: number, e: number) => [number, number, number];
-    readonly pargartifactjs_parseShapeWithCompatibility: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => [number, number, number];
-    readonly pargartifactjs_runTests: (a: number) => [number, number, number];
-    readonly pargartifactjs_schema: (a: number) => [number, number, number];
-    readonly pargartifactjs_schemaTypescript: (a: number) => [number, number, number];
-    readonly pargartifactjs_semanticsHash: (a: number) => any;
     readonly setPanicHook: () => void;
     readonly wasmparser_fromArtifact: (a: number, b: number, c: number, d: number) => [number, number, number];
     readonly wasmparser_new: (a: number, b: number) => [number, number, number];
     readonly wasmparser_parse: (a: number, b: number, c: number) => [number, number, number];
     readonly wasmparser_parse_flat: (a: number, b: number, c: number) => [number, number, number, number];
+    readonly parsanol_string_free: (a: number) => void;
     readonly wasmparser_parse_json: (a: number, b: number, c: number) => [number, number, number, number];
     readonly __wbindgen_malloc: (a: number, b: number) => number;
     readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;

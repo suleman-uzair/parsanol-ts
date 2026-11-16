@@ -83,6 +83,54 @@ export class PargArtifactJs {
         return v1;
     }
     /**
+     * Lower the artifact to a constrained-decoder grammar form
+     * (`target`: "xgrammar" | "llguidance"); `recovery` lowers each
+     * declared resync pattern as an escape alternative at the
+     * repetition spine. Rust is the authoritative lowering — TS
+     * inherits it through this surface instead of a per-language port.
+     * @param {string} target
+     * @param {boolean} recovery
+     * @returns {string}
+     */
+    export(target, recovery) {
+        const val2 = +recovery;
+        const ptr0 = passStringToWasm0(target, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ret = wasm.pargartifactjs_export(this.__wbg_ptr, ptr0, len0, val2);
+        if (ret[2]) {
+            throw takeFromExternrefTable0(ret[1]);
+        }
+        return takeFromExternrefTable0(ret[0]);
+    }
+    /**
+     * Emit a render variant against a bound attribute map (rs#459
+     * slice 2 — the graduated generation path). `model_json` is the
+     * bound map as JSON text (what `parseAndBind` returns). Rust is
+     * the authoritative lowering; TS inherits it through this surface
+     * instead of a per-language renderer.
+     * @param {string} variant
+     * @param {string} model_json
+     * @returns {string}
+     */
+    generate(variant, model_json) {
+        let ptr0, len0, ptr1, len1;
+        try {
+            ptr0 = passStringToWasm0(variant, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            len0 = WASM_VECTOR_LEN;
+            ptr1 = passStringToWasm0(model_json, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            len1 = WASM_VECTOR_LEN;
+        } catch (e) {
+            if (ptr1) { wasm.__wbindgen_free(ptr1, len1 * 1, 1); }
+            if (ptr0) { wasm.__wbindgen_free(ptr0, len0 * 1, 1); }
+            throw e;
+        }
+        const ret = wasm.pargartifactjs_generate(this.__wbg_ptr, ptr0, len0, ptr1, len1);
+        if (ret[2]) {
+            throw takeFromExternrefTable0(ret[1]);
+        }
+        return takeFromExternrefTable0(ret[0]);
+    }
+    /**
      * Load and checksum-verify an artifact envelope.
      * @param {string} artifact_json
      */
@@ -175,6 +223,40 @@ export class PargArtifactJs {
             throw e;
         }
         const ret = wasm.pargartifactjs_parseShapeWithCompatibility(this.__wbg_ptr, ptr0, len0, ptr1, len1, ptr2, len2);
+        if (ret[2]) {
+            throw takeFromExternrefTable0(ret[1]);
+        }
+        return takeFromExternrefTable0(ret[0]);
+    }
+    /**
+     * Explicit reporter without changing existing parseShape defaults.
+     * Compatibility is "strict" or "parslet"; reporter is "default" or
+     * "deepest". The owned JSON result uses the existing shape/error envelope.
+     * @param {string} entry
+     * @param {string} input
+     * @param {string} compatibility
+     * @param {string} reporter
+     * @returns {string}
+     */
+    parseShapeWithReporter(entry, input, compatibility, reporter) {
+        let ptr0, len0, ptr1, len1, ptr2, len2, ptr3, len3;
+        try {
+            ptr0 = passStringToWasm0(entry, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            len0 = WASM_VECTOR_LEN;
+            ptr1 = passStringToWasm0(input, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            len1 = WASM_VECTOR_LEN;
+            ptr2 = passStringToWasm0(compatibility, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            len2 = WASM_VECTOR_LEN;
+            ptr3 = passStringToWasm0(reporter, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            len3 = WASM_VECTOR_LEN;
+        } catch (e) {
+            if (ptr3) { wasm.__wbindgen_free(ptr3, len3 * 1, 1); }
+            if (ptr2) { wasm.__wbindgen_free(ptr2, len2 * 1, 1); }
+            if (ptr1) { wasm.__wbindgen_free(ptr1, len1 * 1, 1); }
+            if (ptr0) { wasm.__wbindgen_free(ptr0, len0 * 1, 1); }
+            throw e;
+        }
+        const ret = wasm.pargartifactjs_parseShapeWithReporter(this.__wbg_ptr, ptr0, len0, ptr1, len1, ptr2, len2, ptr3, len3);
         if (ret[2]) {
             throw takeFromExternrefTable0(ret[1]);
         }
